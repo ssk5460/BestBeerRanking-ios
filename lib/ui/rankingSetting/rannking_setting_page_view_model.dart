@@ -4,6 +4,7 @@ import 'package:best_beer_ranking/data/foundation/keys.dart';
 import 'package:best_beer_ranking/data/model/category.dart';
 import 'package:best_beer_ranking/data/repository/category_repository.dart';
 import 'package:best_beer_ranking/data/repository/ranking_repository.dart';
+import 'package:best_beer_ranking/data/repository/user_repository.dart';
 import 'package:best_beer_ranking/ui/dialog_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:best_beer_ranking/data/model/record.dart';
 import 'package:best_beer_ranking/data/provider/shared_preference_provider.dart';
 import 'package:best_beer_ranking/data/repository/record_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+
 
 final rankingSettingViewModelProvider =
     ChangeNotifierProvider((ref) => RankingSettingViewModel(ref.read));
@@ -26,6 +29,7 @@ class RankingSettingViewModel extends ChangeNotifier {
   bool _isEnterdRanking = false;
   bool get isEnterdRanking => _isEnterdRanking;
 
+  late final _userRepository = _reader(userRepositoryProvider);
   late final _recordRepository = _reader(recordRepositoryProvider);
   late final _rankingRepository = _reader(rankingRepositoryProvider);
   late final _sharedPreferencesManager = _reader(sharedPreferencesManagerProvider);
@@ -64,8 +68,15 @@ class RankingSettingViewModel extends ChangeNotifier {
     if (category == null) {
       return;
     }
-    final data = await _recordRepository.getRankingRecords(category.id);
-    await _rankingRepository.postRanking(category, data);
+
+    final auth = firebase_auth.FirebaseAuth.instance.currentUser;
+    if (auth != null) {
+      final user = await _userRepository.getUser(auth.uid);
+      if (user != null) {
+        final data = await _recordRepository.getRankingRecords(category.id);
+        await _rankingRepository.postRanking(user, category, data);
+      }
+    }
     _records.clear();
     _isEnterdRanking = false;
   }

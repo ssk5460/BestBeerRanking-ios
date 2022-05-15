@@ -84,13 +84,32 @@ class EveryoneRankingPage extends HookConsumerWidget {
             },
             itemCount: filteredData.length,
           ),
-          Container(
-            width: double.infinity,
-            child: Text(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+            (() {
+              final photoUrl = ranking.user.photoUrl ?? "";
+              if (photoUrl.isNotEmpty) {
+                return CircleAvatar(
+                  radius: 16,
+                  backgroundImage: NetworkImage(photoUrl),
+                  backgroundColor: Colors.transparent,
+                );
+              }
+              return Icon(
+                Icons.account_circle,
+                size: 32,
+                color: Colors.black45,
+              );
+            })(),
+            SizedBox(width: 4,),
+            Text(
               '${ranking.user.name}',
               textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 18),
             ),
-          ).paddingEdge(EdgeInsets.fromLTRB(0, 8, 8, 8)),
+              SizedBox(width: 8,),
+          ],).paddingEdge(EdgeInsets.fromLTRB(8, 8, 16, 8))
         ],)
     ).paddingEdge(EdgeInsets.fromLTRB(16, 16, 16, 16));
   }
