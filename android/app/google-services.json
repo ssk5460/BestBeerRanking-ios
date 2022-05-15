@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "456454994630",
+    "project_id": "best-beer-ranking",
+    "storage_bucket": "best-beer-ranking.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456454994630:android:50b5d5ca892c9e550175c7",
+        "android_client_info": {
+          "package_name": "com.ssk.best_beer_ranking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456454994630-vd7tvkvj45bcjh480dib64shcb92uunk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAerqRVGgQtAIv55Qbx--4kQc653tXfnOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456454994630-vd7tvkvj45bcjh480dib64shcb92uunk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

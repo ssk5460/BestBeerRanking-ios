@@ -1,0 +1,15 @@
+<svg id="Lv1_ic_menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <clipPath id="clip-path">
+            <rect id="長方形_5746" data-name="長方形 5746" width="24" height="24" fill="none" />
+        </clipPath>
+    </defs>
+    <g id="グループ_741" data-name="グループ 741" clip-path="url(#clip-path)">
+        <path id="パス_1807" data-name="パス 1807" d="M23,4.848H1a.5.5,0,0,1,0-1H23a.5.5,0,1,1,0,1"
+            fill="#94a1a9" />
+        <path id="パス_1808" data-name="パス 1808" d="M23,20.152H1a.5.5,0,0,1,0-1H23a.5.5,0,0,1,0,1"
+            fill="#94a1a9" />
+        <path id="パス_1809" data-name="パス 1809" d="M23,12.5H1a.5.5,0,0,1,0-1H23a.5.5,0,0,1,0,1"
+            fill="#94a1a9" />
+    </g>
+</svg>

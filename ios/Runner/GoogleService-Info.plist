@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>456454994630-e3pqjdedf3u72qpbvep33gus1brbp17r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.456454994630-e3pqjdedf3u72qpbvep33gus1brbp17r</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCtEswSbZxXBgv-olh6YcHbKDEncv24_Mw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>456454994630</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ssk.bestBeerRanking</string>
+	<key>PROJECT_ID</key>
+	<string>best-beer-ranking</string>
+	<key>STORAGE_BUCKET</key>
+	<string>best-beer-ranking.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:456454994630:ios:3d628174d1d2b5320175c7</string>
+</dict>
+</plist>
