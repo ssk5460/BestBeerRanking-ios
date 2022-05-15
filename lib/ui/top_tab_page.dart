@@ -29,7 +29,7 @@ class TopTabPage extends HookConsumerWidget {
 
     return Scaffold(
       body: _screens[tabType.state.index],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: color.accent,
         onPressed: () {
