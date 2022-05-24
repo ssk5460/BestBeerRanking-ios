@@ -31,6 +31,7 @@ class CategoryDatabaseImpl extends AppDatabase implements CategoryDatabase {
   Future<Category> insert(String title, bool isShowThumbnail, bool isShowPoint) async {
     final db = await database;
     var data = <String, dynamic>{};
+    data["id"] = DateTime.now().microsecondsSinceEpoch;
     data["title"] = title;
     data["hexColor"] = "";
     data["recordedAt"] = DateTime.now().millisecondsSinceEpoch;

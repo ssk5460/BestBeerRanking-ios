@@ -31,13 +31,18 @@ class RankingRepositoryImpl implements RankingRepository {
     final auth = firebase_auth.FirebaseAuth.instance.currentUser;
     return FirebaseFirestore.instance.collection('ranking')
         .doc('${auth?.uid}:${category.id}')
-        .set({"user":user.toJson(), "category":category.toJson(), "records":records.map((e) => e.toJson()).toList()});
+        .set({
+      "user":user.toJson(),
+      "category":category.toJson(),
+      "records":records.map((e) => e.toJson()).toList(),
+      "updatedAt":DateTime.now().millisecondsSinceEpoch });
   }
 
   @override
   Future<List<Ranking>> getRankings() async {
     final querySnapshot = await FirebaseFirestore.instance.collection('ranking').get();
     final rankings = querySnapshot.docs.map((doc) => Ranking.fromJson(doc.data())).toList();
+    rankings.sort((a,b) => b.updatedAt!.compareTo(a.updatedAt!));
     return rankings;
   }
 

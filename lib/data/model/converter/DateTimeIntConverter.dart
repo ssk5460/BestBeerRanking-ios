@@ -7,7 +7,7 @@ class DateTimeIntConverter implements JsonConverter<DateTime?, int?> {
   @override
   DateTime? fromJson(int? json) {
     if (json == null) {
-      return null;
+      return DateTime.fromMillisecondsSinceEpoch(0);
     }
     return DateTime.fromMillisecondsSinceEpoch(json);
   }
