@@ -1,12 +1,7 @@
 
-import 'package:best_beer_ranking/data/local/record_database.dart';
-import 'package:best_beer_ranking/data/model/category.dart';
-import 'package:best_beer_ranking/data/model/ranking.dart';
-import 'package:best_beer_ranking/data/model/record.dart';
 import 'package:best_beer_ranking/data/model/user.dart';
 import 'package:best_beer_ranking/data/provider/shared_preference_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final userRepositoryProvider = Provider((ref) => UserRepositoryImpl(ref.read));
@@ -14,6 +9,10 @@ final userRepositoryProvider = Provider((ref) => UserRepositoryImpl(ref.read));
 abstract class UserRepository {
   Future<User?> updateUser({required String id, String name, String description, String photoUrl});
   Future<User?> getUser(String firebaseAuthUserId);
+
+  Future<List<User>> getWatchUsers();
+  Future<void> watchUser(User user);
+  Future<void> unWatchUser(User user);
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -23,12 +22,52 @@ class UserRepositoryImpl implements UserRepository {
   late final _sharedPreferencesManager = _reader(sharedPreferencesManagerProvider);
 
 
+  @override
+  Future<List<User>> getWatchUsers() async {
+    final me = await _sharedPreferencesManager.getUser();
+    if (me == null) {
+      return [];
+    }
+    final collection = await FirebaseFirestore.instance.collection('user')
+        .doc(me.id)
+        .collection('watch')
+        .get();
+    final users = collection.docs.map((doc) => User.fromJson(doc.data())).toList();
+    return users;
+  }
+
+  @override
+  Future<void> watchUser(User user) async {
+    final me = await _sharedPreferencesManager.getUser();
+    if (me == null) {
+      return;
+    }
+    return FirebaseFirestore.instance.collection('user')
+        .doc('${me.id}')
+        .collection('watch')
+        .doc(user.id)
+        .set(user.toJson());
+  }
+
+  @override
+  Future<void> unWatchUser(User user) async {
+    final me = await _sharedPreferencesManager.getUser();
+    if (me == null) {
+      return;
+    }
+    return FirebaseFirestore.instance.collection('user')
+        .doc('${me.id}')
+        .collection('watch')
+        .doc(user.id)
+        .delete();
+  }
 
   @override
   Future<User?> updateUser({required String id, String name = "", String description = "", String photoUrl = ""}) async {
     await FirebaseFirestore.instance.collection('user')
         .doc('${id}')
         .set(User(
+        id:  id,
         name: name,
         photoUrl: photoUrl,
         description: description)

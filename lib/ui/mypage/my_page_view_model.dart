@@ -51,6 +51,7 @@ class MyPageViewModel extends ChangeNotifier {
     } else {
       _myPageDisplayType = MyPageType.ShowLogin;
     }
+    _name = _user?.name ?? "";
     notifyListeners();
   }
 

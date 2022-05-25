@@ -17,6 +17,8 @@ final rankingRepositoryProvider = Provider((ref) => RankingRepositoryImpl(ref.re
 abstract class RankingRepository {
   Future<void> postRanking(User user, Category category, List<Record> records);
   Future<List<Ranking>> getRankings();
+
+  Future<List<Ranking>> getWatchUserRankings(List<User> users);
 }
 
 class RankingRepositoryImpl implements RankingRepository {
@@ -33,6 +35,7 @@ class RankingRepositoryImpl implements RankingRepository {
         .doc('${auth?.uid}:${category.id}')
         .set({
       "user":user.toJson(),
+      "userId":user.id,
       "category":category.toJson(),
       "records":records.map((e) => e.toJson()).toList(),
       "updatedAt":DateTime.now().millisecondsSinceEpoch });
@@ -40,9 +43,21 @@ class RankingRepositoryImpl implements RankingRepository {
 
   @override
   Future<List<Ranking>> getRankings() async {
-    final querySnapshot = await FirebaseFirestore.instance.collection('ranking').get();
+    final querySnapshot = await FirebaseFirestore.instance.collection('ranking')
+        .orderBy('updatedAt', descending: true)
+        .get();
     final rankings = querySnapshot.docs.map((doc) => Ranking.fromJson(doc.data())).toList();
-    rankings.sort((a,b) => b.updatedAt!.compareTo(a.updatedAt!));
+    return rankings;
+  }
+
+  @override
+  Future<List<Ranking>> getWatchUserRankings(List<User> users) async {
+    final userIds = users.map((e) => e.id).toList();
+    final querySnapshot = await FirebaseFirestore.instance.collection('ranking')
+        .orderBy('updatedAt', descending: true)
+        .where('userId', whereIn: userIds)
+        .get();
+    final rankings = querySnapshot.docs.map((doc) => Ranking.fromJson(doc.data())).toList();
     return rankings;
   }
 

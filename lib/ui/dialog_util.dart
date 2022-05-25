@@ -4,32 +4,6 @@ import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 
 class DialogUtil {
-
-  static showLoginDialog(BuildContext context) async {
-    var inputText = "";
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('ランキングを入力してください'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SignInButton(Buttons.Google, onPressed: () {}),
-                SizedBox(height: 24,),
-                SignInButton(Buttons.Apple, onPressed: () {})
-              ],),
-            actions: <Widget>[
-              TextButton(
-                child: Text('登録する', style: TextStyle(color: Colors.deepOrangeAccent),),
-                onPressed: () async {
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   static void showAlertDialog(
       {required BuildContext context,
       required String message,

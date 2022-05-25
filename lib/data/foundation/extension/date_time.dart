@@ -31,7 +31,7 @@ extension DateTimeExt on DateTime {
   }
 
   String formatMMddyyyyHHmm() {
-    return DateFormat("MM/dd/yyyy HH:mm").format(this);
+    return DateFormat("yyyy/MM/dd HH:mm").format(this);
   }
 
   String formatHHmm() {

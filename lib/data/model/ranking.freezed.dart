@@ -24,11 +24,13 @@ class _$RankingTearOff {
 
   _Ranking call(
       {required User user,
+      required String userId,
       required Category category,
       required List<Record> records,
       @DateTimeIntConverter() DateTime? updatedAt}) {
     return _Ranking(
       user: user,
+      userId: userId,
       category: category,
       records: records,
       updatedAt: updatedAt,
@@ -46,6 +48,7 @@ const $Ranking = _$RankingTearOff();
 /// @nodoc
 mixin _$Ranking {
   User get user => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   Category get category => throw _privateConstructorUsedError;
   List<Record> get records => throw _privateConstructorUsedError;
   @DateTimeIntConverter()
@@ -62,6 +65,7 @@ abstract class $RankingCopyWith<$Res> {
       _$RankingCopyWithImpl<$Res>;
   $Res call(
       {User user,
+      String userId,
       Category category,
       List<Record> records,
       @DateTimeIntConverter() DateTime? updatedAt});
@@ -81,6 +85,7 @@ class _$RankingCopyWithImpl<$Res> implements $RankingCopyWith<$Res> {
   @override
   $Res call({
     Object? user = freezed,
+    Object? userId = freezed,
     Object? category = freezed,
     Object? records = freezed,
     Object? updatedAt = freezed,
@@ -90,6 +95,10 @@ class _$RankingCopyWithImpl<$Res> implements $RankingCopyWith<$Res> {
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -127,6 +136,7 @@ abstract class _$RankingCopyWith<$Res> implements $RankingCopyWith<$Res> {
   @override
   $Res call(
       {User user,
+      String userId,
       Category category,
       List<Record> records,
       @DateTimeIntConverter() DateTime? updatedAt});
@@ -149,6 +159,7 @@ class __$RankingCopyWithImpl<$Res> extends _$RankingCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user = freezed,
+    Object? userId = freezed,
     Object? category = freezed,
     Object? records = freezed,
     Object? updatedAt = freezed,
@@ -158,6 +169,10 @@ class __$RankingCopyWithImpl<$Res> extends _$RankingCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -179,6 +194,7 @@ class __$RankingCopyWithImpl<$Res> extends _$RankingCopyWithImpl<$Res>
 class _$_Ranking implements _Ranking {
   _$_Ranking(
       {required this.user,
+      required this.userId,
       required this.category,
       required this.records,
       @DateTimeIntConverter() this.updatedAt});
@@ -189,6 +205,8 @@ class _$_Ranking implements _Ranking {
   @override
   final User user;
   @override
+  final String userId;
+  @override
   final Category category;
   @override
   final List<Record> records;
@@ -198,7 +216,7 @@ class _$_Ranking implements _Ranking {
 
   @override
   String toString() {
-    return 'Ranking(user: $user, category: $category, records: $records, updatedAt: $updatedAt)';
+    return 'Ranking(user: $user, userId: $userId, category: $category, records: $records, updatedAt: $updatedAt)';
   }
 
   @override
@@ -207,6 +225,7 @@ class _$_Ranking implements _Ranking {
         (other.runtimeType == runtimeType &&
             other is _Ranking &&
             const DeepCollectionEquality().equals(other.user, user) &&
+            const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.category, category) &&
             const DeepCollectionEquality().equals(other.records, records) &&
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
@@ -216,6 +235,7 @@ class _$_Ranking implements _Ranking {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(user),
+      const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(records),
       const DeepCollectionEquality().hash(updatedAt));
@@ -234,6 +254,7 @@ class _$_Ranking implements _Ranking {
 abstract class _Ranking implements Ranking {
   factory _Ranking(
       {required User user,
+      required String userId,
       required Category category,
       required List<Record> records,
       @DateTimeIntConverter() DateTime? updatedAt}) = _$_Ranking;
@@ -242,6 +263,8 @@ abstract class _Ranking implements Ranking {
 
   @override
   User get user;
+  @override
+  String get userId;
   @override
   Category get category;
   @override

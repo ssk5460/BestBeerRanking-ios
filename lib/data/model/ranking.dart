@@ -11,6 +11,7 @@ part 'ranking.g.dart';
 abstract class Ranking with _$Ranking {
   factory Ranking({
     required User user,
+    required String userId,
     required Category category,
     required List<Record> records,
     @DateTimeIntConverter() DateTime? updatedAt,
