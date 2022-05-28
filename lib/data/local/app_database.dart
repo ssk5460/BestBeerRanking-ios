@@ -24,7 +24,7 @@ class AppDatabase {
         'id INTEGER PRIMARY KEY AUTOINCREMENT, '
         'title TEXT, '
         'memo TEXT, '
-        'image TEXT, '
+        'imageBase64String TEXT, '
         'point INTEGER, '
         'ranking INTEGER, '
         'recordedAt INTEGER, '

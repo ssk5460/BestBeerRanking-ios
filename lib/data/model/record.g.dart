@@ -12,7 +12,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       memo: json['memo'] as String?,
       point: json['point'] as int?,
       ranking: json['ranking'] as int?,
-      image: const RecordImageConverter().fromJson(json['image'] as String?),
+      imageBase64String: json['imageBase64String'] as String?,
       recordedAt:
           const DateTimeIntConverter().fromJson(json['recordedAt'] as int?),
       categoryId: json['categoryId'] as int?,
@@ -24,7 +24,7 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'memo': instance.memo,
       'point': instance.point,
       'ranking': instance.ranking,
-      'image': const RecordImageConverter().toJson(instance.image),
+      'imageBase64String': instance.imageBase64String,
       'recordedAt': const DateTimeIntConverter().toJson(instance.recordedAt),
       'categoryId': instance.categoryId,
     };

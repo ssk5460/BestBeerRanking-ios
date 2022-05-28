@@ -28,7 +28,7 @@ class _$RecordTearOff {
       String? memo,
       int? point,
       int? ranking,
-      @RecordImageConverter() Image? image,
+      String? imageBase64String,
       @DateTimeIntConverter() DateTime? recordedAt,
       int? categoryId}) {
     return _Record(
@@ -37,7 +37,7 @@ class _$RecordTearOff {
       memo: memo,
       point: point,
       ranking: ranking,
-      image: image,
+      imageBase64String: imageBase64String,
       recordedAt: recordedAt,
       categoryId: categoryId,
     );
@@ -58,8 +58,7 @@ mixin _$Record {
   String? get memo => throw _privateConstructorUsedError;
   int? get point => throw _privateConstructorUsedError;
   int? get ranking => throw _privateConstructorUsedError;
-  @RecordImageConverter()
-  Image? get image => throw _privateConstructorUsedError;
+  String? get imageBase64String => throw _privateConstructorUsedError;
   @DateTimeIntConverter()
   DateTime? get recordedAt => throw _privateConstructorUsedError;
   int? get categoryId => throw _privateConstructorUsedError;
@@ -79,7 +78,7 @@ abstract class $RecordCopyWith<$Res> {
       String? memo,
       int? point,
       int? ranking,
-      @RecordImageConverter() Image? image,
+      String? imageBase64String,
       @DateTimeIntConverter() DateTime? recordedAt,
       int? categoryId});
 }
@@ -99,7 +98,7 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
     Object? memo = freezed,
     Object? point = freezed,
     Object? ranking = freezed,
-    Object? image = freezed,
+    Object? imageBase64String = freezed,
     Object? recordedAt = freezed,
     Object? categoryId = freezed,
   }) {
@@ -124,10 +123,10 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
           ? _value.ranking
           : ranking // ignore: cast_nullable_to_non_nullable
               as int?,
-      image: image == freezed
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as Image?,
+      imageBase64String: imageBase64String == freezed
+          ? _value.imageBase64String
+          : imageBase64String // ignore: cast_nullable_to_non_nullable
+              as String?,
       recordedAt: recordedAt == freezed
           ? _value.recordedAt
           : recordedAt // ignore: cast_nullable_to_non_nullable
@@ -151,7 +150,7 @@ abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       String? memo,
       int? point,
       int? ranking,
-      @RecordImageConverter() Image? image,
+      String? imageBase64String,
       @DateTimeIntConverter() DateTime? recordedAt,
       int? categoryId});
 }
@@ -172,7 +171,7 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
     Object? memo = freezed,
     Object? point = freezed,
     Object? ranking = freezed,
-    Object? image = freezed,
+    Object? imageBase64String = freezed,
     Object? recordedAt = freezed,
     Object? categoryId = freezed,
   }) {
@@ -197,10 +196,10 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
           ? _value.ranking
           : ranking // ignore: cast_nullable_to_non_nullable
               as int?,
-      image: image == freezed
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as Image?,
+      imageBase64String: imageBase64String == freezed
+          ? _value.imageBase64String
+          : imageBase64String // ignore: cast_nullable_to_non_nullable
+              as String?,
       recordedAt: recordedAt == freezed
           ? _value.recordedAt
           : recordedAt // ignore: cast_nullable_to_non_nullable
@@ -222,7 +221,7 @@ class _$_Record implements _Record {
       this.memo,
       this.point,
       this.ranking,
-      @RecordImageConverter() this.image,
+      this.imageBase64String,
       @DateTimeIntConverter() this.recordedAt,
       this.categoryId});
 
@@ -240,8 +239,7 @@ class _$_Record implements _Record {
   @override
   final int? ranking;
   @override
-  @RecordImageConverter()
-  final Image? image;
+  final String? imageBase64String;
   @override
   @DateTimeIntConverter()
   final DateTime? recordedAt;
@@ -250,7 +248,7 @@ class _$_Record implements _Record {
 
   @override
   String toString() {
-    return 'Record(id: $id, title: $title, memo: $memo, point: $point, ranking: $ranking, image: $image, recordedAt: $recordedAt, categoryId: $categoryId)';
+    return 'Record(id: $id, title: $title, memo: $memo, point: $point, ranking: $ranking, imageBase64String: $imageBase64String, recordedAt: $recordedAt, categoryId: $categoryId)';
   }
 
   @override
@@ -263,7 +261,8 @@ class _$_Record implements _Record {
             const DeepCollectionEquality().equals(other.memo, memo) &&
             const DeepCollectionEquality().equals(other.point, point) &&
             const DeepCollectionEquality().equals(other.ranking, ranking) &&
-            const DeepCollectionEquality().equals(other.image, image) &&
+            const DeepCollectionEquality()
+                .equals(other.imageBase64String, imageBase64String) &&
             const DeepCollectionEquality()
                 .equals(other.recordedAt, recordedAt) &&
             const DeepCollectionEquality()
@@ -278,7 +277,7 @@ class _$_Record implements _Record {
       const DeepCollectionEquality().hash(memo),
       const DeepCollectionEquality().hash(point),
       const DeepCollectionEquality().hash(ranking),
-      const DeepCollectionEquality().hash(image),
+      const DeepCollectionEquality().hash(imageBase64String),
       const DeepCollectionEquality().hash(recordedAt),
       const DeepCollectionEquality().hash(categoryId));
 
@@ -300,7 +299,7 @@ abstract class _Record implements Record {
       String? memo,
       int? point,
       int? ranking,
-      @RecordImageConverter() Image? image,
+      String? imageBase64String,
       @DateTimeIntConverter() DateTime? recordedAt,
       int? categoryId}) = _$_Record;
 
@@ -317,8 +316,7 @@ abstract class _Record implements Record {
   @override
   int? get ranking;
   @override
-  @RecordImageConverter()
-  Image? get image;
+  String? get imageBase64String;
   @override
   @DateTimeIntConverter()
   DateTime? get recordedAt;

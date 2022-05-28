@@ -73,7 +73,7 @@ class RecordRepositoryImpl implements RecordRepository {
       List<int> imageBytes = imageFile.readAsBytesSync();
       base64Image = base64Encode(imageBytes);
     }
-    return Result.guardFuture(() async => await _recordDatabase.update(id:id, title:title, memo:memo, point:point, ranking:ranking, imageFileString: base64Image));
+    return Result.guardFuture(() async => await _recordDatabase.update(id:id, title:title, memo:memo, point:point, ranking:ranking, imageBase64String: base64Image));
   }
 
   @override

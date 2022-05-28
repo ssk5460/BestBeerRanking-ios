@@ -16,12 +16,13 @@ abstract class Record with _$Record {
     String? memo,
     int? point,
     int? ranking,
-    @RecordImageConverter() Image? image,
+    String? imageBase64String,
     @DateTimeIntConverter() DateTime? recordedAt,
     int? categoryId,
   }) = _Record;
 
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
+
 }
 
 class RecordImageConverter implements JsonConverter<Image?, String?> {

@@ -11,6 +11,7 @@ import 'package:best_beer_ranking/theme/layout_size.dart';
 import 'package:best_beer_ranking/ui/dialog_util.dart';
 import 'package:best_beer_ranking/ui/everyoneRanking/everyone_rannking_page_view_model.dart';
 import 'package:best_beer_ranking/ui/layout_util.dart';
+import 'package:best_beer_ranking/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -155,11 +156,16 @@ class EveryoneRankingPage extends HookConsumerWidget {
           (() {
             // 即時関数を使う
             if (category.isShowThumbnail == true) {
+              final imageBase64String = record.imageBase64String ?? "";
+              Image? image;
+              if (imageBase64String.isNotEmpty) {
+                image = Utils.imageFromBase64String(imageBase64String);
+              }
               return Container(
                 width: 80,
                 height: 80,
                 color: Colors.black12,
-                child: record.image ??
+                child: image ??
                     Icon(
                       Icons.image_outlined,
                       color: Colors.black45,

@@ -48,8 +48,10 @@ class EveryoneRankingViewModel extends ChangeNotifier {
     switch (section) {
       case EveryoneRankingViewSection.watch:
         _watchUsers = await _userRepository.getWatchUsers();
-        _rankings = await _rankingRepository.getWatchUserRankings(_watchUsers);
-        notifyListeners();
+        if (_watchUsers.isNotEmpty) {
+          _rankings = await _rankingRepository.getWatchUserRankings(_watchUsers);
+          notifyListeners();
+        }
         break;
       case EveryoneRankingViewSection.all:
         _rankings = await _rankingRepository.getRankings();

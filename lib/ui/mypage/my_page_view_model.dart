@@ -1,6 +1,11 @@
 import 'dart:io';
 
+import 'package:best_beer_ranking/data/local/category_database.dart';
+import 'package:best_beer_ranking/data/local/record_database.dart';
 import 'package:best_beer_ranking/data/model/user.dart';
+import 'package:best_beer_ranking/data/provider/shared_preference_provider.dart';
+import 'package:best_beer_ranking/data/repository/ranking_repository.dart';
+import 'package:best_beer_ranking/data/repository/record_repository.dart';
 import 'package:best_beer_ranking/data/repository/user_repository.dart';
 import 'package:best_beer_ranking/utils/image_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -24,6 +29,13 @@ class MyPageViewModel extends ChangeNotifier {
   MyPageViewModel(this._reader);
 
   late final _userRepository = _reader(userRepositoryProvider);
+  late final _recordRepository = _reader(recordRepositoryProvider);
+  late final _rankingRepository = _reader(rankingRepositoryProvider);
+  late final _categoryRepository = _reader(categoryDatabaseProvider);
+  late final _recordDatabase = _reader(recordDatabaseProvider);
+
+  late final _sharedPreferencesManager = _reader(sharedPreferencesManagerProvider);
+
   final imagePicker = ImagePicker();
 
   final Reader _reader;
@@ -140,9 +152,6 @@ class MyPageViewModel extends ChangeNotifier {
     if (pickedFile == null) return;
     _imageFile = await ImageUtils.cropImage(pickedFile.path);
     final auth = firebase_auth.FirebaseAuth.instance;
-    // auth.currentUser?.getIdToken().whenComplete(() => {
-    //   uploadFile(auth.currentUser!.uid)
-    // });
     uploadFile(auth.currentUser!.uid);
     notifyListeners();
   }
@@ -158,5 +167,17 @@ class MyPageViewModel extends ChangeNotifier {
       print("FirebaseException : ${FirebaseException.toString()}");
     }
   }
+
+  Future<void> syncData() async {
+    final rankings = await _rankingRepository.getMyRankings();
+    rankings.forEach((ranking) async {
+      final category = ranking.category;
+      await _categoryRepository.sync(category);
+      await _recordDatabase.sync(ranking);
+    });
+
+
+  }
+
 
 }

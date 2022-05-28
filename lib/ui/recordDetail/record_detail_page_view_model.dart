@@ -1,19 +1,17 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:best_beer_ranking/data/foundation/keys.dart';
-import 'package:best_beer_ranking/data/model/category.dart';
 import 'package:best_beer_ranking/data/model/record.dart';
 import 'package:best_beer_ranking/data/provider/shared_preference_provider.dart';
-import 'package:best_beer_ranking/data/repository/category_repository.dart';
+import 'package:best_beer_ranking/data/repository/ranking_repository.dart';
 import 'package:best_beer_ranking/data/repository/record_repository.dart';
-import 'package:best_beer_ranking/ui/dialog_util.dart';
+import 'package:best_beer_ranking/data/repository/user_repository.dart';
 import 'package:best_beer_ranking/utils/image_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 final recordDetailViewModelProvider =
     ChangeNotifierProvider((ref) => RecordDetailViewModel(ref.read));
@@ -35,7 +33,11 @@ class RecordDetailViewModel extends ChangeNotifier {
   int? get point => _point;
   int? _point;
 
+  late final _userRepository = _reader(userRepositoryProvider);
   late final _recordRepository = _reader(recordRepositoryProvider);
+  late final _rankingRepository = _reader(rankingRepositoryProvider);
+  late final _sharedPreferencesManager = _reader(sharedPreferencesManagerProvider);
+
   final imagePicker = ImagePicker();
 
   void setRecord(Record record) {
@@ -72,9 +74,25 @@ class RecordDetailViewModel extends ChangeNotifier {
         _imageFile);
     await result.when(success: (data) async {
       _record = data;
+      await updateRanking();
       notifyListeners();
     }, failure: (e) {
     });
+  }
+
+  updateRanking() async {
+    final category = await _sharedPreferencesManager.getCategory();
+    if (category == null) {
+      return;
+    }
+    final auth = firebase_auth.FirebaseAuth.instance.currentUser;
+    if (auth != null) {
+      final user = await _userRepository.getUser(auth.uid);
+      if (user != null) {
+        final data = await _recordRepository.getRankingRecords(category.id);
+        await _rankingRepository.postRanking(user, category, data);
+      }
+    }
   }
 
   Future<void> delete(Record record) async {

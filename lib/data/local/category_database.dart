@@ -12,6 +12,7 @@ abstract class CategoryDatabase {
   Future<Category> insert(String title, bool isShowThumbnail, bool isShowPoint);
   Future<Category> update(int id, String? title, String? hexColor, bool? isShowThumbnail, bool? isShowPoint);
   Future delete(int id);
+  Future<void> sync(Category category);
 }
 
 class CategoryDatabaseImpl extends AppDatabase implements CategoryDatabase {
@@ -92,5 +93,25 @@ class CategoryDatabaseImpl extends AppDatabase implements CategoryDatabase {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  @override
+  Future<void> sync(Category category) async {
+    final db = await database;
+    final maps = await db.query(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [category.id],
+    );
+    final categories = maps.map((map) => Category.fromJson(map)).toList();
+    if (categories.isNotEmpty) {
+      return;
+    }
+    final id = await db.insert(
+      _tableName,
+      category.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(id);
   }
 }

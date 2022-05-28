@@ -75,7 +75,7 @@ class InputViewModel extends ChangeNotifier {
 
 
   Future<void> getImage(ImageSource source) async {
-    final pickedFile = await imagePicker.pickImage(source: source);
+    final pickedFile = await imagePicker.pickImage(source: source, maxHeight: 500, maxWidth: 500);
     if (pickedFile == null) return;
     _imageFile = await ImageUtils.cropImage(pickedFile.path);
     notifyListeners();

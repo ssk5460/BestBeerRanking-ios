@@ -132,6 +132,18 @@ class MyPage extends HookConsumerWidget {
                         },
                         child: Text("変更する"),
                       )),
+                  const SizedBox(height: 24, width: 0),
+                  SizedBox(
+                      width: 240,
+                      height: 44,
+                      child: ElevatedButton(
+                        style:
+                        ElevatedButton.styleFrom(primary: appColors.accent),
+                        onPressed: () async {
+                          viewModel.syncData();
+                        },
+                        child: Text("同期する"),
+                      )),
                 ],
               );
             }

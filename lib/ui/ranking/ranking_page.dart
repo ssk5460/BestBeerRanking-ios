@@ -170,7 +170,7 @@ class RankingPage extends HookConsumerWidget {
                   width: 80,
                   height: 80,
                   color: Colors.black12,
-                  child: record.image ??
+                  child: Utils.imageFromBase64String(record.imageBase64String) ??
                       Icon(
                         Icons.image_outlined,
                         color: Colors.black45,

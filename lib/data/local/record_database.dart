@@ -1,4 +1,5 @@
 import 'package:best_beer_ranking/data/model/category.dart';
+import 'package:best_beer_ranking/data/model/ranking.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:best_beer_ranking/data/model/record.dart';
 import 'package:best_beer_ranking/data/local/app_database.dart';
@@ -9,9 +10,10 @@ final recordDatabaseProvider = Provider((ref) => RecordDatabaseImpl());
 
 abstract class RecordDatabase {
   Future<List<Record>> getRecords(int categoryId);
-  Future<Record> insert(String title, String? memo, int? point, int? ranking, String? imageFileString, DateTime recordedAt, int categoryId);
-  Future<Record> update({required int id, String? title, String? memo, int? point, int? ranking, String? imageFileString});
+  Future<Record> insert(String title, String? memo, int? point, int? ranking, String? imageBase64String, DateTime recordedAt, int categoryId);
+  Future<Record> update({required int id, String? title, String? memo, int? point, int? ranking, String? imageBase64String});
   Future delete(int id);
+  Future<void> sync(Ranking ranking);
 }
 
 class RecordDatabaseImpl extends AppDatabase implements RecordDatabase {
@@ -31,13 +33,14 @@ class RecordDatabaseImpl extends AppDatabase implements RecordDatabase {
   }
 
   @override
-  Future<Record> insert(String title, String? memo, int? point, int? ranking, String? imageFileString, DateTime recordedAt, int categoryId) async {
+  Future<Record> insert(String title, String? memo, int? point, int? ranking, String? imageBase64String, DateTime recordedAt, int categoryId) async {
     final db = await database;
 
     var data = <String, dynamic>{};
+    data["id"] = DateTime.now().millisecondsSinceEpoch;
     data["title"] = title;
     data["memo"] = memo;
-    data["image"] = imageFileString;
+    data["imageBase64String"] = imageBase64String;
     data["point"] = point;
     data["ranking"] = ranking;
     data["recordedAt"] = recordedAt.millisecondsSinceEpoch;
@@ -59,7 +62,7 @@ class RecordDatabaseImpl extends AppDatabase implements RecordDatabase {
 
 
   @override
-  Future<Record> update({required int id, String? title, String? memo, int? point, int? ranking, String? imageFileString}) async {
+  Future<Record> update({required int id, String? title, String? memo, int? point, int? ranking, String? imageBase64String}) async {
     final db = await database;
     var data = <String, dynamic>{};
     if (title != null) {
@@ -71,8 +74,8 @@ class RecordDatabaseImpl extends AppDatabase implements RecordDatabase {
     if (point != null) {
       data["point"] = point;
     }
-    if (imageFileString != null) {
-      data["image"] = imageFileString;
+    if (imageBase64String != null) {
+      data["imageBase64String"] = imageBase64String;
     }
     data["ranking"] = ranking;
     await db.update(
@@ -100,5 +103,25 @@ class RecordDatabaseImpl extends AppDatabase implements RecordDatabase {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  @override
+  Future<void> sync(Ranking ranking) async {
+    final db = await database;
+    ranking.records.forEach((element) async {
+      final maps = await db.query(
+        _tableName,
+        where: 'id = ?',
+        whereArgs: [element.id],
+      );
+      if (maps.isEmpty) {
+        final id = await db.insert(
+          _tableName,
+          element.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+        print(id);
+      }
+    });
   }
 }

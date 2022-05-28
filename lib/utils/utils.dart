@@ -67,10 +67,15 @@ class Utils {
     return formatNumber.format(number);
   }
 
-  static Image imageFromBase64String(String base64String) {
+  static Image? imageFromBase64String(String? base64String) {
+    final data = base64String ?? "";
+    if (data.isEmpty) {
+      return null;
+    }
     return Image.memory(
-      base64Decode(base64String),
+      base64Decode(data),
       fit: BoxFit.fill,
+      gaplessPlayback: true,
     );
   }
 

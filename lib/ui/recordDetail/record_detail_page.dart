@@ -9,6 +9,7 @@ import 'package:best_beer_ranking/ui/button/primary_button.dart';
 import 'package:best_beer_ranking/ui/dialog_util.dart';
 import 'package:best_beer_ranking/ui/recordDetail/record_detail_page_view_model.dart';
 import 'package:best_beer_ranking/ui/text_field/outline_text_from_field.dart';
+import 'package:best_beer_ranking/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -273,13 +274,14 @@ class RecordDetailPage extends HookConsumerWidget {
       );
     }
 
-    if (record.image != null) {
+    final image = Utils.imageFromBase64String(record.imageBase64String);
+    if (image != null) {
       return InkWell(
         child: Container(
           color: Colors.black12,
           width: 200,
           height: 200,
-          child: record.image,
+          child: image,
         ),
         onTap: () {
           viewModel.getImage(ImageSource.gallery);
