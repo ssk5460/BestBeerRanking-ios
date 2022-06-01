@@ -54,6 +54,11 @@ class MyPage extends HookConsumerWidget {
             "マイページ",
             style: TextStyle(color: Colors.black),
           ),
+          actions: [IconButton(
+              onPressed: () {
+                navigator.setting();
+              },
+              icon: Icon(Icons.settings, color: Colors.black54,))],
         ),
         body: SingleChildScrollView(
           child: (() {

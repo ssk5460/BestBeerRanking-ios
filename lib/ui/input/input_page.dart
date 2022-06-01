@@ -7,7 +7,9 @@ import 'package:best_beer_ranking/ui/button/primary_button.dart';
 import 'package:best_beer_ranking/ui/dialog_util.dart';
 import 'package:best_beer_ranking/ui/input/input_page_view_model.dart';
 import 'package:best_beer_ranking/ui/text_field/outline_text_from_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -30,30 +32,12 @@ class InputPage extends HookConsumerWidget {
           ),
         ),
         body: SingleChildScrollView(child: Column(children: [
-          OutlineTextFieldField(
-            label: "[必須] タイトル",
-            keyboardType: TextInputType.name,
-            initialValue: inputViewModel.title,
-            onChanged: (value) {
-              inputViewModel.setTitle(value);
-            },
-          ).padding(
-              top: LayoutSize.sizePadding30,
-              right: LayoutSize.sizePadding20,
-              left: LayoutSize.sizePadding20),
-          OutlineTextFieldField(
-            label: "メモ",
-            keyboardType: TextInputType.text,
-            initialValue: inputViewModel.memo,
-            onChanged: (value) {
-              inputViewModel.setMemo(value);
-            },
-          ).padding(
+          Text("※ランキングは次の画面で設定できます", style: TextStyle(fontSize: 18),).padding(
               top: LayoutSize.sizePadding16,
-              right: LayoutSize.sizePadding20,
-              left: LayoutSize.sizePadding20),
-          const SizedBox(height: LayoutSize.sizeBox30, width: 0),
-          _selectedImage(context, ref),
+              right: LayoutSize.sizePadding8,
+              left: LayoutSize.sizePadding8),
+          const SizedBox(height: 16, width: 0),
+          _inputRecordDetail(context, ref),
           const SizedBox(height: 48, width: 0),
           SizedBox(
               width: 240,
@@ -72,55 +56,11 @@ class InputPage extends HookConsumerWidget {
                 child: Text("記録する"),),
 
           ),
-          const SizedBox(height: 16, width: 0),
-          Text("※ランキングは次の画面で設定できます", style: TextStyle(fontSize: 18),).padding(
-              top: LayoutSize.sizePadding16,
-              right: LayoutSize.sizePadding8,
-              left: LayoutSize.sizePadding8),
+          const SizedBox(height: 48, width: 0),
         ],)),
     );
   }
 
-  // Widget _sliderView(WidgetRef ref) {
-  //   final viewModel = ref.read(inputViewModelProvider);
-  //   final point = ref.watch(inputViewModelProvider).point;
-  //   final appColors = ref.watch(appThemeProvider).appColors;
-  //   return Column(
-  //     children: [
-  //       Container(
-  //         width: double.infinity,
-  //         child: Text(
-  //           "点数",
-  //           style: TextStyle(
-  //               color: appColors.secondaryText, fontSize: FontSize.pt10),
-  //         ),
-  //       ),
-  //       Row(
-  //         children: [
-  //           Container(
-  //               width: 56,
-  //               child: Text("${point ?? "-"}", style: TextStyle(fontSize: 32), textAlign: TextAlign.center,)
-  //           ),
-  //           Container(
-  //               width: 280,
-  //               child: Slider(
-  //                 value: viewModel.point?.toDouble() ?? 0,
-  //                 thumbColor: appColors.accent,
-  //                 activeColor: appColors.accent,
-  //                 inactiveColor: Colors.black12,
-  //                 max: 100,
-  //                 min: 0,
-  //                 divisions: 100,
-  //                 label: "${point ?? "-"}",
-  //                 onChanged: (double value) {
-  //                   viewModel.setPoint(value.toInt());
-  //                 },
-  //               )
-  //           )
-  //         ],)
-  //     ],
-  //   ).padding(left: 20, right: 20);
-  // }
 
   Widget _selectedImage(BuildContext context, WidgetRef ref) {
     final inputViewModel = ref.read(inputViewModelProvider);
@@ -150,4 +90,348 @@ class InputPage extends HookConsumerWidget {
     );
   }
 
+  Widget _inputRecordDetail(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.read(inputViewModelProvider);
+    final appColors = ref.read(appThemeProvider).appColors;
+
+    final evaluation = ref.watch(inputViewModelProvider).evaluation;
+    final sharpPoint = ref.watch(inputViewModelProvider).sharpPoint;
+    final acidityPoint = ref.watch(inputViewModelProvider).acidityPoint;
+    final bitterPoint = ref.watch(inputViewModelProvider).bitterPoint;
+    final sweetPoint = ref.watch(inputViewModelProvider).sweetPoint;
+    final richPoint = ref.watch(inputViewModelProvider).richPoint;
+    final fragrancePoint = ref.watch(inputViewModelProvider).fragrancePoint;
+
+    return Column(children: [
+      OutlineTextFieldField(
+        label: "[必須] タイトル",
+        keyboardType: TextInputType.name,
+        initialValue: "",
+        onChanged: (value) {
+          viewModel.setTitle(value);
+        },
+      ).padding(
+          top: LayoutSize.sizePadding16,
+          right: LayoutSize.sizePadding20,
+          left: LayoutSize.sizePadding20),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Container(
+          width: double.infinity,
+          child: Text(
+            "サムネイル画像",
+            style: TextStyle(
+                color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20, bottom: 16)
+      ),
+      _selectedImage(context, ref),
+      const SizedBox(height: LayoutSize.sizePadding30, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "総合評価",
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt14),)
+                .padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${evaluation ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: evaluation ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setEvaluation(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Divider(
+            height: 10,
+            color: Colors.black54,
+          )),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "キレ",
+              style: TextStyle(
+                  color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${sharpPoint ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: sharpPoint ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setSharpPoint(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "酸味",
+              style: TextStyle(
+                  color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${acidityPoint ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: acidityPoint ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setAcidityPoint(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "苦味",
+              style: TextStyle(
+                  color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${bitterPoint ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: bitterPoint ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setBitterPoint(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "甘味",
+              style: TextStyle(
+                  color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${sweetPoint ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: sweetPoint ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setSweetPoint(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "コク",
+              style: TextStyle(
+                  color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${richPoint ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: richPoint ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setRichPoint(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding16, width: 0),
+      Column(children: [
+        Container(
+            width: double.infinity,
+            child: Text(
+              "香り",
+              style: TextStyle(
+                  color: appColors.secondaryText, fontSize: FontSize.pt14),).padding(left: 20)
+        ),
+        Row(children: [
+          Container(
+            width: 80,
+            child: Text(
+              "${fragrancePoint ?? "-"}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: appColors.secondaryText,
+                  fontSize: FontSize.pt28),),),
+          RatingBar.builder(
+            initialRating: fragrancePoint ?? 0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 8.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 48,
+            ),
+            onRatingUpdate: (rating) {
+              viewModel.setFragrancePoint(rating);
+            },
+          ),
+
+        ],)
+      ],),
+      const SizedBox(height: LayoutSize.sizePadding8, width: 0),
+      OutlineTextFieldField(
+        label: "メモ",
+        keyboardType: TextInputType.multiline,
+        initialValue: viewModel.memo,
+        onChanged: (value) {
+          viewModel.setMemo(value);
+        },
+      ).padding(
+          top: LayoutSize.sizePadding30,
+          right: LayoutSize.sizePadding20,
+          left: LayoutSize.sizePadding20),
+    ],);
+  }
+
+  showImageModalPopup(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.read(inputViewModelProvider);
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              child: Text('カメラで撮影する'),
+              onPressed: () => {
+                viewModel.getImage(ImageSource.camera)
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: Text('端末にある画像を使う'),
+              onPressed: () => {
+                viewModel.getImage(ImageSource.gallery)
+              },
+            ),
+          ],
+          cancelButton: CupertinoButton(
+            child: Text('cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        );
+      },
+    );
+  }
 }

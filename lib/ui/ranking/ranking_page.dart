@@ -122,33 +122,6 @@ class RankingPage extends HookConsumerWidget {
         )));
   }
 
-  // depricated: 得点順で並び替えるダイアログ
-  showChangeRankingDialog(BuildContext context, WidgetRef ref) async {
-    final rankingViewModel = ref.read(rankingViewModelProvider);
-    var inputText = "";
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "ランキングはドラック移動で並び替えることができます。"
-                  "\n\n[点数順に並び替える]を押すと点数順にランキングを並べ替えれます。"
-                  "\n※このアプリでは同率順位はありません",
-              style: TextStyle(fontSize: 16),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('点数順に並び替える'),
-                onPressed: () async {
-                  Navigator.pop(context);
-                  rankingViewModel.updateRankingWithPoint();
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   List<Widget> _itemBuilder(WidgetRef ref, List<Record> records) {
     final appColors = ref.read(appThemeProvider).appColors;
     final navigator = ref.watch(appNavigationStackProvider.notifier);

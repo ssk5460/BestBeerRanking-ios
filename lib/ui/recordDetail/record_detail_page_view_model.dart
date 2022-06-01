@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:best_beer_ranking/data/local/record_database.dart';
 import 'package:best_beer_ranking/data/model/record.dart';
 import 'package:best_beer_ranking/data/provider/shared_preference_provider.dart';
 import 'package:best_beer_ranking/data/repository/ranking_repository.dart';
 import 'package:best_beer_ranking/data/repository/record_repository.dart';
 import 'package:best_beer_ranking/data/repository/user_repository.dart';
 import 'package:best_beer_ranking/utils/image_utils.dart';
+import 'package:best_beer_ranking/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,18 +29,20 @@ class RecordDetailViewModel extends ChangeNotifier {
   var _record;
   File? get imageFile => _imageFile;
   File? _imageFile;
+  Image? get image => _image;
+  Image? _image;
 
   String? get title => _title;
   String? _title;
   String? get memo => _memo;
   String? _memo;
-  int? get point => _point;
-  int? _point;
 
   late final _userRepository = _reader(userRepositoryProvider);
   late final _recordRepository = _reader(recordRepositoryProvider);
   late final _rankingRepository = _reader(rankingRepositoryProvider);
   late final _sharedPreferencesManager = _reader(sharedPreferencesManagerProvider);
+
+  late final _recordDatabase = _reader(recordDatabaseProvider);
 
   final imagePicker = ImagePicker();
 
@@ -44,7 +50,14 @@ class RecordDetailViewModel extends ChangeNotifier {
     this._record = record;
     this._title = record.title;
     this._memo = record.memo;
-    this._point = record.point;
+    this._evaluation = record.evaluation;
+    this._sharpPoint = record.sharp_point;
+    this._acidityPoint = record.acidity_point;
+    this._bitterPoint = record.bitter_point;
+    this._sweetPoint = record.sweet_point;
+    this._richPoint = record.rich_point;
+    this._fragrancePoint = record.fragrance_point;
+    this._image = Utils.imageFromBase64String(record.imageBase64String);
     notifyListeners();
   }
 
@@ -56,28 +69,23 @@ class RecordDetailViewModel extends ChangeNotifier {
     _memo = memo;
   }
 
-  void setPoint(int? point) {
-    _point = point;
-    notifyListeners();
-  }
-
   Future<void> update() async {
     if (_title?.isEmpty == true) {
       return;
     }
-    final result = await _recordRepository.updateRecord(
-        record.id,
-        _title,
-        _memo,
-        _point,
-        record.ranking,
-        _imageFile);
-    await result.when(success: (data) async {
-      _record = data;
-      await updateRanking();
-      notifyListeners();
-    }, failure: (e) {
-    });
+    await _recordDatabase.update(
+        id: record.id,
+        title: _title,
+        memo: _memo,
+        ranking: record.ranking,
+        evaluation: _evaluation,
+        sharp_point: _sharpPoint,
+        acidity_point: _acidityPoint,
+        bitter_point: _bitterPoint,
+        sweet_point: _sweetPoint,
+        rich_point: _richPoint,
+        fragrance_point: _fragrancePoint,
+        imageFile: _imageFile);
   }
 
   updateRanking() async {
@@ -110,5 +118,55 @@ class RecordDetailViewModel extends ChangeNotifier {
     _imageFile = await ImageUtils.cropImage(pickedFile.path);
     notifyListeners();
   }
+
+  double? get evaluation => _evaluation;
+  double? _evaluation;
+  Future<void> setEvaluation(double evaluation) async {
+    _evaluation = evaluation;
+    notifyListeners();
+  }
+
+  double? get sharpPoint => _sharpPoint;
+  double? _sharpPoint;
+  Future<void> setSharpPoint(double sharpPoint) async {
+    _sharpPoint = sharpPoint;
+    notifyListeners();
+  }
+
+  double? get acidityPoint => _acidityPoint;
+  double? _acidityPoint;
+  Future<void> setAcidityPoint(double acidityPoint) async {
+    _acidityPoint = acidityPoint;
+    notifyListeners();
+  }
+
+  double? get bitterPoint => _bitterPoint;
+  double? _bitterPoint;
+  Future<void> setBitterPoint(double bitterPoint) async {
+    _bitterPoint = bitterPoint;
+    notifyListeners();
+  }
+
+  double? get sweetPoint => _sweetPoint;
+  double? _sweetPoint;
+  Future<void> setSweetPoint(double sweetPoint) async {
+    _sweetPoint = sweetPoint;
+    notifyListeners();
+  }
+
+  double? get richPoint => _richPoint;
+  double? _richPoint;
+  Future<void> setRichPoint(double richPoint) async {
+    _richPoint = richPoint;
+    notifyListeners();
+  }
+
+  double? get fragrancePoint => _fragrancePoint;
+  double? _fragrancePoint;
+  Future<void> setFragrancePoint(double fragrancePoint) async {
+    _fragrancePoint = fragrancePoint;
+    notifyListeners();
+  }
+
 }
 

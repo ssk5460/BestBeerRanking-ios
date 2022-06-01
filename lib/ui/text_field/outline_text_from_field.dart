@@ -50,7 +50,7 @@ class OutlineTextFieldField extends HookConsumerWidget {
               Text(
                 label!,
                 style: TextStyle(
-                    color: appColors.secondaryText, fontSize: FontSize.pt10),
+                    color: appColors.secondaryText, fontSize: FontSize.pt14),
               ),
               isShowError == null
                   ? const SizedBox()

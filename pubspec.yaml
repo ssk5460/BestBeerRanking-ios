@@ -77,6 +77,8 @@ dependencies:
   google_fonts: ^2.1.0
   flutter_svg: ^1.0.0
   flutter_signin_button: ^2.0.0
+  flutter_rating_bar: ^4.0.1
+
 
   # For ImagePick
   image_picker: ^0.8.4+9

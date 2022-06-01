@@ -3,6 +3,7 @@ import 'package:best_beer_ranking/data/model/record.dart';
 import 'package:best_beer_ranking/ui/everyoneRanking/everyone_ranking_page.dart';
 import 'package:best_beer_ranking/ui/log/log_page.dart';
 import 'package:best_beer_ranking/ui/mypage/my_page.dart';
+import 'package:best_beer_ranking/ui/setting/setting.dart';
 import 'package:best_beer_ranking/ui/rankingCategoryDetail/ranking_category_detail_page.dart';
 import 'package:best_beer_ranking/ui/rankingSetting/ranking_setting_page.dart';
 import 'package:best_beer_ranking/ui/recordDetail/record_detail_page.dart';
@@ -65,6 +66,8 @@ const rankingPage = AppPage(key: AppPageKey('ranking'), child: RankingPage(), ma
 const everyoneRankingPage = AppPage(key: AppPageKey('ranking'), child: EveryoneRankingPage(), maintainState: false);
 // my page
 const myPage = AppPage(key: AppPageKey('ranking'), child: MyPage(), maintainState: false);
+// setting
+const settingPage = AppPage(key: AppPageKey('setting'), child: SettingPage(), maintainState: false);
 
 // Input page
 const inputPage = AppPage(key: AppPageKey('input'), child: InputPage(), maintainState: false);
@@ -133,6 +136,11 @@ class AppNavigationStack extends StateNotifier<List<AppPage>> {
   void input() {
     state.remove(inputPage);
     state = List.from(state..add(inputPage));
+  }
+
+  void setting() {
+    state.remove(settingPage);
+    state = List.from(state..add(settingPage));
   }
 
   void recordDetail(Record record) {

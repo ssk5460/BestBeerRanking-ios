@@ -14,7 +14,7 @@ class AppDatabase {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _createTable,
     );
   }
@@ -25,7 +25,13 @@ class AppDatabase {
         'title TEXT, '
         'memo TEXT, '
         'imageBase64String TEXT, '
-        'point INTEGER, '
+        'evaluation REAL, '
+        'sharp_point REAL, '
+        'acidity_point REAL, '
+        'bitter_point REAL, '
+        'sweet_point REAL, '
+        'rich_point REAL, '
+        'fragrance_point REAL, '
         'ranking INTEGER, '
         'recordedAt INTEGER, '
         'categoryId INTEGER)';

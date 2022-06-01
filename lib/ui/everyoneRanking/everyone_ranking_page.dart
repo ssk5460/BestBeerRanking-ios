@@ -164,7 +164,7 @@ class EveryoneRankingPage extends HookConsumerWidget {
               return Container(
                 width: 80,
                 height: 80,
-                color: Colors.black12,
+                color: Colors.white,
                 child: image ??
                     Icon(
                       Icons.image_outlined,

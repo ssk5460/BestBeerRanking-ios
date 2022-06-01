@@ -87,11 +87,6 @@ class RankingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateRankingWithPoint() {
-    _recordRepository.updateRankingWithPoint(_records);
-    refresh();
-  }
-
   refresh() async {
     final category = await _sharedPreferencesManager.getCategory();
     if (category != null) {

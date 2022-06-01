@@ -50,8 +50,10 @@ class EveryoneRankingViewModel extends ChangeNotifier {
         _watchUsers = await _userRepository.getWatchUsers();
         if (_watchUsers.isNotEmpty) {
           _rankings = await _rankingRepository.getWatchUserRankings(_watchUsers);
-          notifyListeners();
+        } else {
+          _rankings.clear();
         }
+        notifyListeners();
         break;
       case EveryoneRankingViewSection.all:
         _rankings = await _rankingRepository.getRankings();
@@ -62,7 +64,7 @@ class EveryoneRankingViewModel extends ChangeNotifier {
   }
 
   bool isWatchedUser(User user) {
-    final watched = _watchUsers.contains(user);
+    final watched = _watchUsers.map((e) => e.id).contains(user.id);
     return watched;
   }
   
